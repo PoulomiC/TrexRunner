@@ -23,6 +23,7 @@ function setup() {
     //create a trex sprite
     trex = createSprite(50,160,20,50);
     trex.addAnimation("running", trex_running);
+    trex.addAnimation("collided", trex_collided);
     trex.scale = 0.5;
     
     //create a ground sprite
@@ -37,14 +38,12 @@ function setup() {
 
     //To group similar objects together
     cloudsGroup = createGroup();
-    obstaclesGroup = createGroup();
+    obstaclesGroup = createGroup();    
 
-    
-
-    console.log("Quotient " + Math.floor(623/7));
+    //console.log("Quotient " + Math.floor(623/7));
 
     //Modulo operator returns remainder of a division operation
-    console.log("Remainder " + 623 % 80)
+    //console.log("Remainder " + 623 % 80)
 }
 
 function draw() {
@@ -68,6 +67,21 @@ function draw() {
 
     if(trex.isTouching(obstaclesGroup)){
         gameState = "over";
+    }
+
+    /**
+     * 1. stop the ground from moving
+     * 2. stop the clouds from moving
+     * 3. stop the obstacles from moving
+     * 4. stop the trex from marching
+     * 5. show Game Over image to user
+     * 6. show the Restart icon to user
+     */
+    if(gameState === "over"){
+        ground.velocityX = 0;
+        cloudsGroup.setVelocityXEach(0);
+        obstaclesGroup.setVelocityXEach(0);
+        trex.changeAnimation("collided");
     }
 
     drawSprites();
